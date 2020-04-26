@@ -2,9 +2,25 @@
 
 > 本着精简调用方的设计模式，集成eCharts的第三方库，减调用方的API查阅数，进行eCharts的二次封装
 
-## 文档目的
-> 后续开发人员接手或对本组件进行维护时，可查阅本文档，对组件有一个大致的了解，知道每个文件夹是做什么的，每个文件是做什么的，一些参数的讲解。
-> 
+## 如何使用`Vue-eCharts-Component`
+>* **第一步，安装依赖**
+```
+npm install vue-echarts-component --save
+```
+
+>*  **第二步，页面调用**
+```vue
+<vue-charts
+  charts-type="barX"
+  :x-data="xData"
+  :y-data="yData"
+  :scroll-id="container"
+  title="图表组件化"
+  data-label="name"
+  data-key="data"
+>
+</vue-chnarts>
+```
 
 ## API大纲
 | 参数 | 说明| 类型 | 默认值 | 是否必填 | 详细注解 |
