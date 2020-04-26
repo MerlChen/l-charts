@@ -1,14 +1,14 @@
 <template>
   <div
     :id="domId"
-    ref="lineY"
+    ref="lineXStack"
   >
   </div>
 </template>
 
 <script>
 export default {
-  name: "LineY",
+  name: "LineXStack",
   props: {
     store: {
       type: Object,
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     domId() {
-      return "line_y_" + (Math.random() * 90000000000).toFixed(0);
+      return "line_x_stack_" + (Math.random() * 90000000000).toFixed(0);
     }
   },
   created() {
@@ -45,7 +45,7 @@ export default {
      * @description 检测图表是否需要生成
      */
     checkApply() {
-      if (!this.isDone && this.store.showCharts(this.$refs.lineY)) {
+      if (!this.isDone && this.store.showCharts(this.$refs.lineXStack)) {
         this.isDone = true;
         this.initChartsInfo();
       }
@@ -54,7 +54,7 @@ export default {
      * @description 初始化图表DOM信息
      */
     initChartsInfo() {
-      this.chartsInfo = this.$eCharts.init(document.getElementById(this.domId));
+      this.chartsInfo = window.$eCharts.init(document.getElementById(this.domId));
       this.dataFormat();
       this.initChartsDataInfo();
     },
@@ -62,12 +62,14 @@ export default {
      * @description 图表数据处理
      */
     dataFormat() {
-      const flag = this.store.getXDataType === "object";
+      const flag = this.store.getYDataType === "object";
       if (flag) {
-        this.store.getXData.map(item => {
+        this.store.getYData.map(item => {
           this.seriesData.push({
             name: item[this.store.getDataLabel],
             type: "line",
+            areaStyle: {},
+            stack: this.store.getStackLabel,
             data: item[this.store.getDataKey]
           });
         });
@@ -79,13 +81,13 @@ export default {
     initChartsDataInfo() {
       const _this = this;
       _this.chartsInfo.setOption({
-        tooltip: _this.store.getToolTip,
         title: _this.store.getTitleInfo,
+        tooltip: _this.store.getToolTip,
         legend: _this.store.getLegendConfig,
-        yAxis: _this.store.getAxisBoundaryGap,
-        xAxis: _this.store.getAxisValue,
         grid: _this.store.getGridConfig,
         color: _this.store.getColorList,
+        xAxis: _this.store.getAxisBoundaryGap,
+        yAxis: _this.store.getAxisValue,
         series: _this.seriesData,
         animationEasing: "elasticOut",
         animationDelayUpdate: function(idx) {

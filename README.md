@@ -1,16 +1,16 @@
-# vue-eCharts-component 组件介绍
+# l-charts 组件介绍
 
 > 本着精简调用方的设计模式，集成eCharts的第三方库，减调用方的API查阅数，进行eCharts的二次封装
 
-## 如何使用`Vue-eCharts-Component`
+## 如何使用`l-charts`
 >* **第一步，安装依赖**
 ```
-npm install vue-echarts-component --save
+npm install l-charts --save
 ```
 
 >*  **第二步，页面调用**
 ```vue
-<vue-charts
+<l-charts
   charts-type="barX"
   :x-data="xData"
   :y-data="yData"
@@ -19,7 +19,7 @@ npm install vue-echarts-component --save
   data-label="name"
   data-key="data"
 >
-</vue-chnarts>
+</l-charts>
 ```
 
 ## API大纲

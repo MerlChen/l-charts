@@ -1,17 +1,16 @@
 {
-  "name": "vue-echarts-component",
-  "version": "0.1.1",
+  "name": "l-echarts",
+  "version": "0.1.0",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lib": "vue-cli-service build --target lib --name vue-charts --dest lib packages/index.js"
+    "lib": "vue-cli-service build --target lib --name l-charts --dest lib packages/index.js"
   },
   "dependencies": {
     "core-js": "^3.6.4",
     "echarts": "^4.7.0",
-    "thistype": "^1.0.2",
     "vue": "^2.6.11"
   },
   "devDependencies": {

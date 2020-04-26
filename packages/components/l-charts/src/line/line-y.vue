@@ -1,14 +1,14 @@
 <template>
   <div
     :id="domId"
-    ref="pie"
+    ref="lineY"
   >
   </div>
 </template>
 
 <script>
 export default {
-  name: "Pie",
+  name: "LineY",
   props: {
     store: {
       type: Object,
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     domId() {
-      return "pie_" + (Math.random() * 90000000000).toFixed(0);
+      return "line_y_" + (Math.random() * 90000000000).toFixed(0);
     }
   },
   created() {
@@ -45,7 +45,7 @@ export default {
      * @description 检测图表是否需要生成
      */
     checkApply() {
-      if (!this.isDone && this.store.showCharts(this.$refs.pie)) {
+      if (!this.isDone && this.store.showCharts(this.$refs.lineY)) {
         this.isDone = true;
         this.initChartsInfo();
       }
@@ -54,50 +54,43 @@ export default {
      * @description 初始化图表DOM信息
      */
     initChartsInfo() {
-      this.chartsInfo = this.$eCharts.init(document.getElementById(this.domId));
+      this.chartsInfo = window.$eCharts.init(document.getElementById(this.domId));
       this.dataFormat();
+      this.initChartsDataInfo();
     },
     /**
      * @description 图表数据处理
      */
     dataFormat() {
-      const obj = {
-        name: this.store.getStackLabel,
-        type: "pie",
-        radius: "80%",
-        center: ["50%", "50%"],
-        data: [],
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: "rgba(0, 0, 0, 0.5)"
-          }
-        }
-      };
-      this.store.getXData.map(item => {
-        const cItem = Object.assign({}, item);
-        this.$set(cItem, "name", item[this.store.getDataLabel])
-        this.$set(cItem, "value", item[this.store.getDataKey])
-        obj.data.push(cItem);
-      });
-      this.seriesData.push(obj);
-      this.initChartsDataInfo();
+      const flag = this.store.getXDataType === "object";
+      if (flag) {
+        this.store.getXData.map(item => {
+          this.seriesData.push({
+            name: item[this.store.getDataLabel],
+            type: "line",
+            data: item[this.store.getDataKey]
+          });
+        });
+      }
     },
     /**
-     * @description 执行图表生成
+     * @description 初始化图表的数据信息
      */
     initChartsDataInfo() {
       const _this = this;
       _this.chartsInfo.setOption({
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
+        tooltip: _this.store.getToolTip,
         title: _this.store.getTitleInfo,
-        legend: _this.store.getPieLegendDataInfo,
+        legend: _this.store.getLegendConfig,
+        yAxis: _this.store.getAxisBoundaryGap,
+        xAxis: _this.store.getAxisValue,
+        grid: _this.store.getGridConfig,
         color: _this.store.getColorList,
-        series: _this.seriesData
+        series: _this.seriesData,
+        animationEasing: "elasticOut",
+        animationDelayUpdate: function(idx) {
+          return idx * 5;
+        }
       }, true);
     }
   }

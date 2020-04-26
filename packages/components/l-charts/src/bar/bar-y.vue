@@ -1,14 +1,14 @@
 <template>
   <div
     :id="domId"
-    ref="barX"
+    ref="barY"
   >
   </div>
 </template>
 
 <script>
 export default {
-  name: "BarX",
+  name: "BarY",
   props: {
     store: {
       type: Object,
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     domId() {
-      return "bar_x_" + (Math.random() * 90000000000).toFixed(0);
+      return "bar_y_" + (Math.random() * 90000000000).toFixed(0);
     }
   },
   created() {
@@ -45,7 +45,7 @@ export default {
      * @description 检测图表是否需要生成
      */
     checkApply() {
-      if (!this.isDone && this.store.showCharts(this.$refs.barX)) {
+      if (!this.isDone && this.store.showCharts(this.$refs.barY)) {
         this.isDone = true;
         this.initChartsInfo();
       }
@@ -54,39 +54,48 @@ export default {
      * @description 初始化图表信息
      */
     initChartsInfo() {
-      this.chartsInfo = this.$eCharts.init(document.getElementById(this.domId));
+      this.chartsInfo = window.$eCharts.init(document.getElementById(this.domId));
       this.dataFormat();
-    },
-    /**
-     * @description 数据加工处理=>动态判断是否为多结构数据
-     */
-    dataFormat() {
-      let flag = false;
-      flag = this.store.getYDataType === "object";
-      if (flag) {
-        this.store.getYData.map(item => {
-          this.seriesData.push({
-            name: this.store.getDataLabel && item[this.store.getDataLabel] ? item[this.store.getDataLabel] : item,
-            type: "bar",
-            data: this.store.getDataKey && item[this.store.getDataKey] ? item[this.store.getDataKey] : item,
-            barMaxWidth: "20px",
-            itemStyle: this.store.getXBarStyle
-          });
-        });
-      }
       this.initChartsDataInfo();
     },
     /**
-     * @description 初始化图表数据信息
+     * @description 数据整理
+     */
+    dataFormat() {
+      const flag = this.store.getXDataType === "object";
+      // 判断是单结构数据还是多结构数据，如果是多结构数据的话，需要整理成多数据
+      if (flag) {
+        this.store.getXData.map(item => {
+          this.seriesData.push({
+            name: this.store.getDataLabel ? item[this.store.getDataLabel] : item,
+            type: "bar",
+            data: this.store.getDataKey ? item[this.store.getDataKey] : item,
+            barMaxWidth: "20px",
+            itemStyle: this.store.getYBarStyle
+          });
+        });
+      } else {
+        this.seriesData = [
+          {
+            type: "bar",
+            data: this.store.getXData,
+            barMaxWidth: "20px",
+            itemStyle: this.store.getYBarStyle
+          }
+        ];
+      }
+    },
+    /**
+     * @description 初始化图表及图表数据信息
      */
     initChartsDataInfo() {
       const _this = this;
       _this.chartsInfo.setOption({
-        tooltip: _this.store.getToolTip,
         title: _this.store.getTitleInfo,
-        xAxis: _this.store.getAxisConfig,
+        tooltip: _this.store.getToolTip,
         legend: _this.store.getLegendConfig,
-        yAxis: _this.store.getAxisValue,
+        yAxis: _this.store.getAxisConfig,
+        xAxis: _this.store.getAxisValue,
         grid: _this.store.getGridConfig,
         color: _this.store.getColorList,
         series: _this.seriesData,
@@ -94,10 +103,6 @@ export default {
         animationDelayUpdate: function(idx) {
           return idx * 5;
         }
-      }, true);
-      // 点击事件处理
-      _this.chartsInfo.on("click", (params) => {
-        console.log(_this.store.getXData[params.componentIndex], _this.store.getYData[params.dataIndex]);
       });
     }
   }
@@ -105,4 +110,5 @@ export default {
 </script>
 
 <style lang="scss">
+
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <vue-charts
+    <l-charts
       charts-type="barX"
       :x-data="chartsData.xData"
       :y-data="chartsData.yData"
@@ -10,7 +10,7 @@
       scroll-id="app"
       class="charts-item"
     >
-    </vue-charts>
+    </l-charts>
   </div>
 </template>
 

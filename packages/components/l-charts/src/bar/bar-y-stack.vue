@@ -55,7 +55,7 @@ export default {
      * @description 初始化图表信息
      */
     initChartsInfo() {
-      this.charts = this.$eCharts.init(document.getElementById(this.domId));
+      this.charts = window.$eCharts.init(document.getElementById(this.domId));
       this.dataFormat();
       this.initChartsDataInfo();
     },

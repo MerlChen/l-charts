@@ -1,15 +1,14 @@
 <template>
   <div
     :id="domId"
-    class="bar-stack"
-    ref="barXStack"
+    ref="pieRing"
   >
   </div>
 </template>
 
 <script>
 export default {
-  name: "BarXStack",
+  name: "PieRing",
   props: {
     store: {
       type: Object,
@@ -27,7 +26,7 @@ export default {
   },
   computed: {
     domId() {
-      return "bar_x_stack_" + (Math.random() * 90000000000).toFixed(0);
+      return "pie_ring_" + (Math.random() * 90000000000).toFixed(0);
     }
   },
   created() {
@@ -46,47 +45,51 @@ export default {
      * @description 检测图表是否需要生成
      */
     checkApply() {
-      if (!this.isDone && this.store.showCharts(this.$refs.barXStack)) {
+      if (!this.isDone && this.store.showCharts(this.$refs.pieRing)) {
         this.isDone = true;
         this.initChartsInfo();
       }
     },
     /**
-     * @description 初始化图表信息
+     * @description 图表初始化
      */
     initChartsInfo() {
-      this.chartsInfo = this.$eCharts.init(document.getElementById(this.domId));
+      this.chartsInfo = window.$eCharts.init(document.getElementById(this.domId));
       this.dataFormat();
+    },
+    /**
+     * @description 图表数据处理
+     */
+    dataFormat() {
+      const obj = {
+        name: this.store.getStackLabel,
+        type: "pie",
+        radius: ["50%", "75%"],
+        avoidLabelOverlap: false,
+        labelLine: { show: true },
+        data: []
+      };
+      this.store.getXData.map(item => {
+        this.$set(item, "name", item[this.store.getDataLabel]);
+        this.$set(item, "value", item[this.store.getDataKey]);
+        obj.data.push(item);
+      });
+      this.seriesData.push(obj);
       this.initChartsDataInfo();
     },
     /**
-     * @description 数据整理
-     */
-    dataFormat() {
-      this.store.getYData.map(item => {
-        this.seriesData.push({
-          name: item.name,
-          type: "bar",
-          stack: this.store.getStackLabel,
-          barMaxWidth: "20px",
-          itemStyle: this.store.getXBarStyle,
-          data: this.store.getDataKey ? item[this.store.getDataKey] : item
-        });
-      });
-    },
-    /**
-     * @description 初始化图表及图表数据信息
+     * @description 执行图表生成
      */
     initChartsDataInfo() {
       const _this = this;
       _this.chartsInfo.setOption({
-        tooltip: _this.store.getToolTip,
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
         title: _this.store.getTitleInfo,
-        legend: _this.store.getLegendConfig,
-        grid: _this.store.getGridConfig,
+        legend: _this.store.getPieLegendDataInfo,
         color: _this.store.getColorList,
-        xAxis: _this.store.getAxisConfig,
-        yAxis: _this.store.getAxisValue,
         series: _this.seriesData
       }, true);
     }

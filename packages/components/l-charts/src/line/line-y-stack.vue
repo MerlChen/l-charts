@@ -1,14 +1,14 @@
 <template>
   <div
     :id="domId"
-    ref="lineXStack"
+    ref="lineYStack"
   >
   </div>
 </template>
 
 <script>
 export default {
-  name: "LineXStack",
+  name: "LineYStack",
   props: {
     store: {
       type: Object,
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     domId() {
-      return "line_x_stack_" + (Math.random() * 90000000000).toFixed(0);
+      return "line_y_stack_" + (Math.random() * 90000000000).toFixed(0);
     }
   },
   created() {
@@ -45,7 +45,7 @@ export default {
      * @description 检测图表是否需要生成
      */
     checkApply() {
-      if (!this.isDone && this.store.showCharts(this.$refs.lineXStack)) {
+      if (!this.isDone && this.store.showCharts(this.$refs.lineYStack)) {
         this.isDone = true;
         this.initChartsInfo();
       }
@@ -54,7 +54,7 @@ export default {
      * @description 初始化图表DOM信息
      */
     initChartsInfo() {
-      this.chartsInfo = this.$eCharts.init(document.getElementById(this.domId));
+      this.chartsInfo = window.$eCharts.init(document.getElementById(this.domId));
       this.dataFormat();
       this.initChartsDataInfo();
     },
@@ -62,9 +62,9 @@ export default {
      * @description 图表数据处理
      */
     dataFormat() {
-      const flag = this.store.getYDataType === "object";
+      const flag = this.store.getXDataType === "object";
       if (flag) {
-        this.store.getYData.map(item => {
+        this.store.getXData.map(item => {
           this.seriesData.push({
             name: item[this.store.getDataLabel],
             type: "line",
@@ -86,8 +86,8 @@ export default {
         legend: _this.store.getLegendConfig,
         grid: _this.store.getGridConfig,
         color: _this.store.getColorList,
-        xAxis: _this.store.getAxisBoundaryGap,
-        yAxis: _this.store.getAxisValue,
+        yAxis: _this.store.getAxisBoundaryGap,
+        xAxis: _this.store.getAxisValue,
         series: _this.seriesData,
         animationEasing: "elasticOut",
         animationDelayUpdate: function(idx) {

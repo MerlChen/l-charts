@@ -1,14 +1,14 @@
 <template>
   <div
     :id="domId"
-    ref="pieRing"
+    ref="pie"
   >
   </div>
 </template>
 
 <script>
 export default {
-  name: "PieRing",
+  name: "Pie",
   props: {
     store: {
       type: Object,
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     domId() {
-      return "pie_ring_" + (Math.random() * 90000000000).toFixed(0);
+      return "pie_" + (Math.random() * 90000000000).toFixed(0);
     }
   },
   created() {
@@ -45,16 +45,16 @@ export default {
      * @description 检测图表是否需要生成
      */
     checkApply() {
-      if (!this.isDone && this.store.showCharts(this.$refs.pieRing)) {
+      if (!this.isDone && this.store.showCharts(this.$refs.pie)) {
         this.isDone = true;
         this.initChartsInfo();
       }
     },
     /**
-     * @description 图表初始化
+     * @description 初始化图表DOM信息
      */
     initChartsInfo() {
-      this.chartsInfo = this.$eCharts.init(document.getElementById(this.domId));
+      this.chartsInfo = window.$eCharts.init(document.getElementById(this.domId));
       this.dataFormat();
     },
     /**
@@ -64,15 +64,22 @@ export default {
       const obj = {
         name: this.store.getStackLabel,
         type: "pie",
-        radius: ["50%", "75%"],
-        avoidLabelOverlap: false,
-        labelLine: { show: true },
-        data: []
+        radius: "80%",
+        center: ["50%", "50%"],
+        data: [],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: "rgba(0, 0, 0, 0.5)"
+          }
+        }
       };
       this.store.getXData.map(item => {
-        this.$set(item, "name", item[this.store.getDataLabel]);
-        this.$set(item, "value", item[this.store.getDataKey]);
-        obj.data.push(item);
+        const cItem = Object.assign({}, item);
+        this.$set(cItem, "name", item[this.store.getDataLabel])
+        this.$set(cItem, "value", item[this.store.getDataKey])
+        obj.data.push(cItem);
       });
       this.seriesData.push(obj);
       this.initChartsDataInfo();

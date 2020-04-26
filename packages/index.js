@@ -6,7 +6,7 @@
 function registerComponents(Vue) {
   const requireComponent = require.context(
     // 其组件目录的相对路径
-    "./components/vue-charts",
+    "./components/l-charts",
     // 是否查询其子目录
     false,
     // 匹配基础组件文件名的正则表达式
@@ -16,7 +16,6 @@ function registerComponents(Vue) {
     // 获取组件配置
     const componentConfig = requireComponent(fileName);
     const componentContext = componentConfig.default || componentConfig;
-    console.log(componentContext)
     Vue.use(componentContext);
   });
 }

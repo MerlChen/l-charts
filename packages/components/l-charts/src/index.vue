@@ -1,18 +1,12 @@
 <template>
   <component
     :is="type"
-    ref="chartsDom"
-    v-model="value"
-    :x-label="xLabel"
-    :x-value="xValue"
-    :y-label="yLabel"
-    :y-value="yValue"
-    :stack="stack"
     :store="store"
   >
   </component>
 </template>
 <script>
+import eCharts from "echarts"
 import Store from "./model";
 import barX from "./bar/bar-x";
 import barY from "./bar/bar-y";
@@ -31,7 +25,7 @@ import pieRing from "./pie/pie-ring";
 import pieRose from "./pie/pie-rose";
 
 export default {
-  name: "VueCharts",
+  name: "LCharts",
   components: {
     barX,
     barY,
@@ -144,6 +138,7 @@ export default {
     };
   },
   mounted() {
+    window.$eCharts = eCharts;
     this.$nextTick(() => {
       this.initStoreInfo();
     });
