@@ -1,0 +1,53 @@
+{
+  "name": "vue-echarts-component",
+  "version": "0.1.1",
+  "private": false,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "lib": "vue-cli-service build --target lib --name vue-charts --dest lib packages/index.js"
+  },
+  "dependencies": {
+    "core-js": "^3.6.4",
+    "echarts": "^4.7.0",
+    "thistype": "^1.0.2",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.3.0",
+    "@vue/cli-plugin-eslint": "~4.3.0",
+    "@vue/cli-service": "~4.3.0",
+    "html-webpack-plugin": "^4.2.0",
+    "node-sass": "^4.14.0",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack-cli": "^3.3.11",
+    "eslint": "^6.8.0",
+    "babel-eslint": "^10.1.0",
+    "@vue/eslint-config-prettier": "^4.0.1",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "eslint-plugin-html": "^6.0.2",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-vue": "^5.0.0-beta.6"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
