@@ -6,9 +6,17 @@
 >* **第一步，安装依赖**
 ```
 npm install l-charts --save
+npm install echarts --save
+npm install node-sass sass-loader --save-dev
 ```
-
->*  **第二步，页面调用**
+>* **第二步：`main.js引入组件包`**
+```javascript
+// 此处省略其他包名
+import lCharts from "l-charts/packages"
+// 此处省略其他包名及设置
+Vue.use(lCharts)
+```
+>*  **第三步，页面调用**
 ```vue
 <l-charts
   charts-type="barX"
@@ -18,10 +26,18 @@ npm install l-charts --save
   title="图表组件化"
   data-label="name"
   data-key="data"
+  class="charts-container"
 >
 </l-charts>
 ```
-
+>* **第四步，覆盖样式**
+```css
+/* 组件为可直接渲染，内置了默认宽度和高度，如果业务方需要进行样式覆盖，可在调用时，增加class */
+.charts-container{
+  width: 500px;
+  height: 200px;
+}
+```
 ## API大纲
 | 参数 | 说明| 类型 | 默认值 | 是否必填 | 详细注解 |
 |:----|:----|:---- |:---- |:---- |:---- |
@@ -39,7 +55,7 @@ npm install l-charts --save
 | **`scrollId`** | 包裹所有图表的容器ID | `String` | 无 | 否 | [scrollId详细说明](#scroll-id—包裹所有图表的容器ID,必须是ID) |
 
  
-## API大全 
+## API详解
  
 ### `title`——图表的名称
 > 图表显示在中间的名称

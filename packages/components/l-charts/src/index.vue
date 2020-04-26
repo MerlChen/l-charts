@@ -1,6 +1,7 @@
 <template>
   <component
     :is="type"
+    class="l-charts"
     :store="store"
   >
   </component>
@@ -138,12 +139,22 @@ export default {
     };
   },
   mounted() {
-    window.$eCharts = eCharts;
+    this.initGlobalCharts();
     this.$nextTick(() => {
       this.initStoreInfo();
     });
   },
   methods: {
+    /**
+     * @description 给window增加全局变量
+     */
+    initGlobalCharts() {
+      if (!eCharts) {
+        console.error("请先安装eCharts依赖")
+        return
+      }
+      window.$eCharts = eCharts;
+    },
     /**
      * @description 初始化Store信息
      */
@@ -221,4 +232,8 @@ export default {
 </script>
 
 <style lang="scss">
+  .l-charts {
+    width: 600px;
+    height: 400px;
+  }
 </style>
